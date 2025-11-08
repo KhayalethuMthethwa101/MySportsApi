@@ -1,0 +1,7 @@
+django 
+djangorestframework 
+premier-league
+django-environ
+psycopg2-binary
+dj-database-url
+requests
