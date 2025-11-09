@@ -1,13 +1,13 @@
 from rest_framework import serializers
+from .models import LeagueTable, PlayerStat, Club, Player
 
-# These are "non-model" serializers. They define the shape of our API output
-# without being tied to a database model. This is perfect for proxying an external API.
+# These serializers are now based on our models, but the
+# services.py file pre-formats the data, so we can
+# keep them as simple Serializers.
 
 class LeagueTableEntrySerializer(serializers.Serializer):
     """
     Serializes the data for a single team in the league table.
-    The field names (e.g., 'position', 'team') must match the keys
-    created in our services.py file.
     """
     position = serializers.IntegerField()
     team = serializers.CharField(max_length=100)
@@ -15,16 +15,20 @@ class LeagueTableEntrySerializer(serializers.Serializer):
     wins = serializers.IntegerField()
     draws = serializers.IntegerField()
     losses = serializers.IntegerField()
-    goal_difference = serializers.CharField(max_length=10) # e.g., "+15"
+    # --- New Fields Below ---
+    goals_for = serializers.IntegerField()
+    goals_against = serializers.IntegerField()
+    # --- End New Fields ---
+    goal_difference = serializers.IntegerField()
     points = serializers.IntegerField()
-    # We can add more fields if the library provides them and we map them in services.py
+    form = serializers.CharField(max_length=10, allow_blank=True, allow_null=True)
 
 
 class PlayerStatSerializer(serializers.Serializer):
     """
     Serializes the data for a single player's stats.
     """
-    name = serializers.CharField(max_length=100)
+    name = serializers.CharField(max_length=200)
     club = serializers.CharField(max_length=100)
-    nationality = serializers.CharField(max_length=100)
+    nationality = serializers.CharField(max_length=100, allow_blank=True, allow_null=True)
     stat = serializers.IntegerField()
